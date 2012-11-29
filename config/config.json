@@ -1,0 +1,5 @@
+{
+  "PORT": 4000,
+  "USE_TOOLBAR": false,
+  "ROOT_URL_STATIC": ""
+}
