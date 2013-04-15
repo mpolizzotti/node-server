@@ -1,5 +1,5 @@
 # The node-server project
-Sample implementation of a node server using the express application framework. The focus of this code base is to allow a developer to quickly stand-up a client-side development environment for rapid prototyping.
+A sample implementation of a node server using the express application framework. The focus of this code base is to allow a developer to quickly stand-up a client-side development environment for rapid prototyping. The node-server project ships with configured development server, configured grunt commands for cleaning, linting and compressing code as well as providing a starting point for UI development with access to underscore and jQuery libraries through a requirejs configuration.
 
 ### Install Node & NPM
 The node server leverages [node.js](http://nodejs.org/) and the [express](http://expressjs.com/) framework for its development server. The node server also makes use of [npm](https://npmjs.org/), a package manager for installing node modules. The latest releases of node ships with npm so only a node installation is required. Node offers platform installers for both Windows and Mac OSX. They also offer binaries for Windows, Mac OSX and Linux systems. Visit the [download](http://nodejs.org/download/) page for more information.
