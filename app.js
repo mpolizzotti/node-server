@@ -1,48 +1,44 @@
-// The purpose of this file is to setup & configure the express server.
+/*jshint es5:true */
+/*global require:true, __dirname:true, console:true, process:true, setTimeout:true */
 
-// ===========================================
-// Modules.
-// ===========================================
-var express           = require('express'),
-    nconf             = require('nconf');
-    fs                = require('fs');
-    winston           = require('winston');
-    config            = require('./config');
+// Modules & Variables.
+var express = require('express'),
+	http = require('http'),
+	nconf = require('nconf'),
+	less = require('less-middleware'),
+	hogan = require('hogan-express'),
+	config = require('./config'),
+	app;
 
-// ===========================================
 // Express configuration.
-// ===========================================
-// Create server.
-var app = express.createServer();
+app = express();
 
-// Listen on Port.
-app.listen(nconf.get('PORT'));
-
-// Development.
-app.configure('development', function(){
-  winston.remove(winston.transports.Console);
-  winston.add(winston.transports.Console, {level: 'verbose', colorize: true, json: false, handleExceptions: true});
-});
-
-// Production.
-app.configure('production', function(){
-  winston.remove(winston.transports.Console);
-  winston.add(winston.transports.Console, {level: 'info', colorize: false, json: false, handleExceptions: true});
-});
-
-// Views.
+// All server configurations.
 app.configure(function () {
-  app.set('view engine', 'jade');
-  app.set('views', __dirname + '/views');
-  app.set('view options', { layout: false });
-  app.use(express.favicon());
-  app.use(express.cookieParser());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+	'use strict';
+
+	// settings.
+	app.set('port', nconf.get('PORT') || 3000);
+	app.set('views', __dirname + '/views');
+	app.set('view engine', 'html');
+	app.set('layout', 'layout');
+	app.engine('html', hogan);
+
+	// middleware.
+	app.use(express.logger('dev'));
+	app.use(express.bodyParser());
+	app.use(express.methodOverride());
+	app.use(app.router);
+	app.use(less(nconf.get('LESS')));
+	app.use(express.errorHandler());
+	app.use(express.static(__dirname + '/public'));
 });
 
 // Routes.
 require('./routes')(app);
 
-// Export module.
-module.exports = app;
+// Startup.
+http.createServer(app).listen(app.get('port'), function () {
+	'use strict';
+	console.log('Express server listening on port ' + app.get('port'));
+});

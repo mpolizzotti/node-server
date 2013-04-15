@@ -1,17 +1,18 @@
 // Modules.
 var nconf = require('nconf');
 
-/**
- * Routes associated with serving pages.
- * @param {Object} app
- */
+// Manage all page routes.
 module.exports = function(app) {
-  
-  // Route: Default index page.
-  app.get('/', function (req, res) {
-    res.render('index', {
-      nconf: nconf
-    });
-  });
-  
+
+	// Renders universal response.
+	var response = function (req, res) {
+		res.render('index', {
+			title: 'Node Server',
+			dev: true
+		});
+	};
+
+	// Page routes.
+	app.get('/', response);
+	app.get('/home', response);
 };
